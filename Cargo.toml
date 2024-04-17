@@ -1,0 +1,39 @@
+[package]
+name = "rustino-lcd"
+version = "0.1.0"
+authors = ["Olle Axelsson <soa.96@hotmail.com>"]
+edition = "2021"
+license = "MIT OR Apache-2.0"
+
+[[example]]
+name = "write_text"
+path = "examples/arduino_uno/write_text.rs"
+
+[[example]]
+name = "CGRam"
+path = "examples/arduino_uno/CGRam.rs"
+
+[dependencies]
+panic-halt = "0.2.0"
+ufmt = "0.2.0"
+nb = "0.1.2"
+embedded-hal =  {version = "0.2.3", features = ["unproven"]}
+avr-device = "0.5.4"
+
+[dependencies.arduino-hal]
+git = "https://github.com/rahix/avr-hal"
+rev = "21342dcace7184f01fdc4e9703b01197bd4b4b4f"
+features = ["arduino-uno"]
+
+# Configure the build for minimal size - AVRs have very little program memory
+[profile.dev]
+panic = "abort"
+lto = true
+opt-level = "s"
+
+[profile.release]
+panic = "abort"
+codegen-units = 1
+debug = true
+lto = true
+opt-level = "s"
